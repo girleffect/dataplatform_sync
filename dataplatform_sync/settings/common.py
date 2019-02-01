@@ -1,5 +1,8 @@
 import os
 from celery.schedules import crontab
+import djcelery
+
+djcelery.setup_loader()
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -10,6 +13,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 INSTALLED_APPS = [
+    'djcelery',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -97,7 +101,10 @@ STATIC_URL = '/static/'
 
 
 CELERY_APP_NAME = 'proj'
-
+CELERY_ALWAYS_EAGER = False
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_RESULT_SERIALIZER = 'json'
 
 CELERY_BEAT_SCHEDULE = {
     # Executes every Week at 5:30 a.m.
