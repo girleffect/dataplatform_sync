@@ -13,7 +13,9 @@ ALLOWED_HOSTS = []
 
 # Application definition
 INSTALLED_APPS = [
+    'dataplatform_sync',
     'djcelery',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
