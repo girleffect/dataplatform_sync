@@ -23,6 +23,7 @@ jobs:
       python: "3.6"
 
     - stage: docker
+      python: "3.6"
       services: [docker]
       env:
         - IMAGE_NAME=praekeltfoundation/dataplatform_sync
