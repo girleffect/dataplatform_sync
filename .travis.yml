@@ -21,12 +21,6 @@ jobs:
   include:
     - stage: test
       python: "3.6"
-      
-    - python: "3.6"
-    # Clear unused build steps
-      services: []
-      deploy: []
-      after_success: []
 
     - stage: docker
       python: "3.6"
