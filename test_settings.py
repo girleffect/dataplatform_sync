@@ -1,4 +1,4 @@
-from dataplatform_sync.settings.common import *
+from dataplatform_sync.settings.base import *
 
 
 DEBUG = True
