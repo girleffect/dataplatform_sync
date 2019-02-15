@@ -1,4 +1,4 @@
-sudo: false  # Force container-based builds.
+dist: xenial
 language: python
 
 
