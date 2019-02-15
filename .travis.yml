@@ -1,6 +1,7 @@
-sudo: false  # Force container-based builds.
+sudo: false
 language: python
-
+python:
+  - "3.3"
 
 cache:
   - pip
