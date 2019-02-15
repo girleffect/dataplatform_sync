@@ -1,4 +1,4 @@
-FROM index.docker.io/praekeltfoundation/django-bootstrap:latest
+FROM praekeltfoundation/django-bootstrap:py3.6
 
 COPY . /app
 RUN pip install -e .
