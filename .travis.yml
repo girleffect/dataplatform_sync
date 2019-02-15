@@ -20,7 +20,7 @@ after_success:
 jobs:
   include:
     - stage: test
-      
+
     - stage: docker
       services: [docker]
       env:
@@ -46,4 +46,5 @@ jobs:
 
       # Built steps inherited from the default stage that we don't want
       before_install: ignore
+      install: []
       after_success: []
