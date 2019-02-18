@@ -26,6 +26,16 @@ class GCDataSync(TestCase):
         self.assertTrue(
             tasks.gc_data_sync(files=files, directory=directory))
 
+    def test_success_func_arg(self):
+        def file_name():
+            return 'tests/*.csv'
+
+        def dir_name():
+            return 'tests'
+
+        self.assertTrue(tasks.gc_data_sync(
+            files=file_name, directory=dir_name))
+
     def test_invalid_args(self):
         try:
             self.assertTrue(tasks.gc_data_sync())

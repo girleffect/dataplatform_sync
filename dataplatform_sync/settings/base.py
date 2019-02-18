@@ -1,6 +1,6 @@
 import os
 import datetime
-from celery.schedules import crontab
+from celery.schedules import crontab, schedule
 
 import djcelery
 
@@ -116,7 +116,9 @@ CELERY_BEAT_SCHEDULE = {
     'pull-call-detail-to-s3': {
         'task': 'tasks.gc_data_sync',
         'schedule': crontab(hour=5, minute=30, day_of_week=1),
-        'args': ({'files': 'GC_RAW_DATA/*.csv', 'dir': 'girlsconnect/GC_RAW_DATA'}),
+        'args': ({
+            'files': 'GC_RAW_DATA/*.csv', 'dir': 'girlsconnect/GC_RAW_DATA'
+        }),
     },
 
     # Executes every Week at 5:00 a.m.
@@ -124,12 +126,9 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'tasks.gc_data_sync',
         'schedule': crontab(hour=5, minute=00, day_of_week=1),
         'args': ({
-            'files': 'GC_CallDtl/playStoryDetails{}.csv'.format(
-                (datetime.datetime.now().date() - datetime.timedelta(days=1)).strftime('%Y%m%d')
-            ),
-            'dir': 'girlsconnect/GC_CallDtl'
-        }),
-            ),
+            'files': lambda: 'GC_CallDtl/playStoryDetails{}.csv'.format(
+                (datetime.datetime.now().date() - datetime.timedelta(days=1)
+                 ).strftime('%Y%m%d')),
             'dir': 'girlsconnect/GC_CallDtl'
         }),
     },
