@@ -3,7 +3,7 @@
 # REMOTE_HOST, USERNAME, REMOTE_DIR, FILES
 
 # usage
-# `./SFTPImport.sh -p <password> -u "bib" -h 197.210.150.250  -d /home/aphiwe/bar -f GC_RAW_DATA/*.csv \
+# `./SFTPImport.sh -p <password> -u "username" -h 127.0.0.1  -d /home/aphiwe/bar -f GC_RAW_DATA/*.csv \
 #       -a <S3 access token> -s <S3 secret key> -b <S3 bucket name[prefix]>`
 
 # -u Username
