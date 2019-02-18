@@ -13,6 +13,12 @@ def gc_data_sync(**kwargs):
     files = kwargs.get('files', '')
     directory = kwargs.get('directory', '')
 
+    if callable(files):
+        files = files()
+
+    if callable(directory):
+        directory = directory()
+
     host = getattr(settings, 'ISON_HOST', '')
     user = getattr(settings, 'ISON_USER', '')
     password = getattr(settings, 'ISON_PASSWORD', '')
