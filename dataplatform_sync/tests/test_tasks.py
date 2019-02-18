@@ -26,6 +26,7 @@ class GCDataSync(TestCase):
         self.assertTrue(
             tasks.gc_data_sync(files=files, directory=directory))
 
+    @patch('subprocess.run', run)
     def test_success_func_arg(self):
         def file_name():
             return 'tests/*.csv'
