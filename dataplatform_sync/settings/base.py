@@ -115,7 +115,7 @@ CELERY_BEAT_SCHEDULE = {
     # Executes every Week at 5:30 a.m.
     'pull-call-detail-to-s3': {
         'task': 'tasks.gc_data_sync',
-        'schedule': crontab(hour=13, minute=00, day_of_week='*'),
+        'schedule': crontab(hour=14, minute=00, day_of_week='*'),
         'args': ({
             'files': 'GC_RAW_DATA/*.csv', 'dir': 'girlsconnect/GC_RAW_DATA'
         }),
@@ -124,7 +124,7 @@ CELERY_BEAT_SCHEDULE = {
     # Executes every Week at 5:00 a.m.
     'pull-play-story-detail-to-s3': {
         'task': 'tasks.gc_data_sync',
-        'schedule': crontab(hour=13, minute=00, day_of_week='*'),
+        'schedule': crontab(hour=14, minute=00, day_of_week='*'),
         'args': ({
             'files': lambda: 'GC_CallDtl/playStoryDetails{}.csv'.format(
                 (datetime.datetime.now().date() - datetime.timedelta(days=1)
