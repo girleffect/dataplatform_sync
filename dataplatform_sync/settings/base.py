@@ -8,10 +8,11 @@ import djcelery
 djcelery.setup_loader()
 
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(",")
 
 
 # Application definition
@@ -104,32 +105,31 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
-CELERY_APP_NAME = 'proj'
-CELERY_ALWAYS_EAGER = False
-CELERY_TASK_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ALWAYS_EAGER = False
+BROKER_URL = os.environ.get('BROKER_URL', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get(
+    'CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
 
-CELERY_BEAT_SCHEDULE = {
+CELERYBEAT_SCHEDULE = {
     # Executes every Week at 5:30 a.m.
     'pull-call-detail-to-s3': {
-        'task': 'tasks.gc_data_sync',
+        'task': 'dataplatform_sync.tasks.gc_data_sync',
         'schedule': crontab(hour=14, minute=00, day_of_week='*'),
-        'args': ({
+        'kwargs': {
             'files': 'GC_RAW_DATA/*.csv', 'dir': 'girlsconnect/GC_RAW_DATA'
-        }),
+        },
     },
 
     # Executes every Week at 5:00 a.m.
     'pull-play-story-detail-to-s3': {
-        'task': 'tasks.gc_data_sync',
+        'task': 'dataplatform_sync.tasks.gc_data_sync',
         'schedule': crontab(hour=14, minute=00, day_of_week='*'),
-        'args': ({
-            'files': lambda: 'GC_CallDtl/playStoryDetails{}.csv'.format(
-                (datetime.datetime.now().date() - datetime.timedelta(days=1)
-                 ).strftime('%Y%m%d')),
+        'kwargs': {
+            'files': 'GC_CallDtl/playStoryDetails*.csv',
             'dir': 'girlsconnect/GC_CallDtl'
-        }),
+        },
     },
 }

@@ -8,7 +8,7 @@ class ShellExecutionException(Exception):
         super(ShellExecutionException, self).__init__(*args, **kwargs)
 
 
-@task
+@task(ignore_result=True)
 def gc_data_sync(**kwargs):
     files = kwargs.get('files', '')
     directory = kwargs.get('directory', '')
