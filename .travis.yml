@@ -24,9 +24,9 @@ jobs:
     - stage: docker
       services: [docker]
       env:
-        - IMAGE_NAME=praekeltfoundation/dataplatform_sync
-        - REGISTRY_USER=praekeltorgdeploy
-        - secure: "NR8oUMQ7rmdKv6WKf0qcX8dRkvJeyrxkz8W6AcaAKROIS3dPY9QZjmxCmpSfv56qBNBfSJn54yI0Vntf4mdF9DDOBHv1JtH7pES47u2DLYctSCMZ1Ww48gWsSw+55N4uFT6uNf6RZaTB3jneVNwyujGp19IavqfdlY1qgytD0hfrJhs2Wzk5+wOSzJ+5Je0Dxv8z/lldkweu4G5Vz318MmqBOCCK/zOjUWU0OLJIUaHywARxkFYoM3FB89cKGl0h4xKcdh4PVBinubhrpSRK6sWOqiTFU6bfulKeLAz7fL8FU0vKJ+CuTa9Tawn6pRrA+NcC1EjQSEFi43krUtT+lvhPE2odF2HLe40YAdCvxupi7houqh2231tz7nTtmLyTyOlI2OvVEV+CK+QMZwnMJCTT+XSGQLml7OWRUOx8mkblyIMEoAn3OcxkroMG9K7qKlgUGgLvDdnW+R23EZHqZgi9iTj3A+7kq13zdBX7QSpPFJYpLVU6Xi85IRvugzM7elw6mSV5V4n38xO6Vn4OJ2vz6DedEIFkEDDkxXgukT0/hg9Yrgsg9jY3EqnHA+0/NvoV2BuqtDtKGDAZ6QAFp/ea0nIZ4KlKPDfsO8IAmnNuGIxws4Ha4t56VIJx2M4zA7iKYoVi9RLqX5/yumEIDX1+8q/y7uu3mNAxSugJeTg="
+        - IMAGE_NAME=girleffect/dataplatform_sync
+        - REGISTRY_USER=geautomation
+        - secure: "kLP+MDzHhvy6/8WhmATuRZKbyhBbGdtOZzQo+4yH+lfqPwmacmSxyc0nqYk6TLI3LG12FY8MyAcnnB1PV9ydQoT27oqxu6uF9h3Jowz//TdfPWjzTV0b6WsPOmYsXgi7+da27yp0He2Pk/TOIAtAU5AO43WHqPI2Xq9BfXLFg256D5qcopKQmLqBBK/oSteIeJ3tU/QIIGFSbbf4NEf2j2/WiHmQFYXu4CNTGIsHwt0OZpxiKn9dA10gWq3dV4anO6LRVJBa9CXbTrfCW30S8SvTNSg3MHm1UTLg+NIYb627c65mt+ugAitK/4C+lNXuba2V8z3B/HLiXUtvGCe3vahFFp2SAFpvzGhPwFHdavajy42nTGDon73WbEB9SBgHSB/VlfB+xoGZaMAtPJrKSnaKgfgqoVM8vyTS5feU1sx2UaIG8UyxiFEeOIuD7DsNtObf6U0uS9EHYpUizA399Uo4RUwuBrK+SBoPray5ac+U2/b+Bd2myp0oMLzQVM/LqW2hP6Amy6VAWBZYlWT1xZGgDfQSzkr5elQwX3OvVweIStL/eN4rz9vjR2HggUBbX3DUHlnlJJJUf+nv88NCGKcZcF+dHjXG2VmMlavrx57hyvUbLtoQl1+dtnjVoaFRYB0VKf6AKMoMGvDsST2oaVcNJudESrrHijpev7otMoE="
 
       script:
         - docker build --tag "$IMAGE_NAME" .
