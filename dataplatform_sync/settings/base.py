@@ -1,6 +1,5 @@
 import os
-import datetime
-from celery.schedules import crontab, schedule
+from celery.schedules import crontab
 
 import djcelery
 
@@ -128,7 +127,9 @@ CELERYBEAT_SCHEDULE = {
         'task': 'dataplatform_sync.tasks.gc_data_sync',
         'schedule': crontab(hour=14, minute=00, day_of_week='*'),
         'kwargs': {
-            'files': 'GC_CallDtl/playStoryDetails*.csv',
+            'files': 'GC_CallDtl/playStoryDetails{}.csv',
+            'timestamped_files': True,
+            'timestamped_format': '%Y%m%d',
             'dir': 'girlsconnect/GC_CallDtl'
         },
     },
