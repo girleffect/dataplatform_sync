@@ -6,7 +6,6 @@ import djcelery
 
 djcelery.setup_loader()
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -115,7 +114,7 @@ CELERYBEAT_SCHEDULE = {
     # Executes every Week at 5:30 a.m.
     'pull-call-detail-to-s3': {
         'task': 'dataplatform_sync.tasks.gc_data_sync',
-        'schedule': crontab(hour=14, minute=00, day_of_week='*'),
+        'schedule': crontab(hour=16, day_of_week='*'),
         'kwargs': {
             'files': 'GC_RAW_DATA/*.csv', 'dir': 'girlsconnect/GC_RAW_DATA'
         },
@@ -124,7 +123,7 @@ CELERYBEAT_SCHEDULE = {
     # Executes every Week at 5:00 a.m.
     'pull-play-story-detail-to-s3': {
         'task': 'dataplatform_sync.tasks.gc_data_sync',
-        'schedule': crontab(hour=14, minute=00, day_of_week='*'),
+        'schedule': crontab(hour=16, day_of_week='*'),
         'kwargs': {
             'files': 'GC_CallDtl/playStoryDetails{}.csv',
             'timestamped_files': True,

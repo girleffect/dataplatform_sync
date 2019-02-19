@@ -7,4 +7,4 @@ ENV DJANGO_SETTINGS_MODULE dataplatform_sync.settings
 
 RUN apt-get update && apt-get install -y  sshpass
 
-CMD ["dataplatform_sync.wsgi:application"]
+CMD ["dataplatform_sync.wsgi:application",  "--timeout", "1800"]
