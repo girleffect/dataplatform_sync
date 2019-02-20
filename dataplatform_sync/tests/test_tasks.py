@@ -28,14 +28,13 @@ class GCDataSync(TestCase):
 
     @patch('subprocess.run', run)
     def test_success_func_arg(self):
-        def file_name():
-            return 'tests/*.csv'
-
-        def dir_name():
-            return 'tests'
-
-        self.assertTrue(tasks.gc_data_sync(
-            files=file_name, directory=dir_name))
+        kw = {
+            'files': 'testfile{}.csv',
+            'timestamped_files': True,
+            'timestamped_format': '%Y%m%d',
+            'directory': 'test',
+        }
+        self.assertTrue(tasks.gc_data_sync(**kw))
 
     def test_invalid_args(self):
         try:

@@ -1,6 +1,7 @@
 import subprocess
 from celery import task
 from django.conf import settings
+from django.utils import timezone
 
 
 class ShellExecutionException(Exception):
@@ -12,12 +13,14 @@ class ShellExecutionException(Exception):
 def gc_data_sync(**kwargs):
     files = kwargs.get('files', '')
     directory = kwargs.get('directory', '')
+    timestamped_files = kwargs.get('timestamped_files')
+    timestamped_format = kwargs.get('timestamped_format')
 
-    if callable(files):
-        files = files()
-
-    if callable(directory):
-        directory = directory()
+    if timestamped_files and timestamped_format:
+        files = files.format(
+            (timezone.now() - timezone.timedelta(days=1)
+             ).strftime(timestamped_format)
+        )
 
     host = getattr(settings, 'ISON_HOST', '')
     user = getattr(settings, 'ISON_USER', '')
