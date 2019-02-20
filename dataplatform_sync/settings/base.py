@@ -115,19 +115,20 @@ CELERYBEAT_SCHEDULE = {
     # Executes every Week at 5:30 a.m.
     'pull-call-detail-to-s3': {
         'task': 'dataplatform_sync.tasks.gc_data_sync',
-        'schedule': crontab(hour=14, minute=00, day_of_week='*'),
+        'schedule': crontab(hour=9, day_of_week='*'),
         'kwargs': {
-            'files': 'GC_RAW_DATA/*.csv', 'dir': 'girlsconnect/GC_RAW_DATA'
+            'files': 'GC_RAW_DATA/*.csv',
+            'directory': 'girlsconnect/GC_RAW_DATA'
         },
     },
 
     # Executes every Week at 5:00 a.m.
     'pull-play-story-detail-to-s3': {
         'task': 'dataplatform_sync.tasks.gc_data_sync',
-        'schedule': crontab(hour=14, minute=00, day_of_week='*'),
+        'schedule': crontab(hour=9, day_of_week='*'),
         'kwargs': {
             'files': 'GC_CallDtl/playStoryDetails*.csv',
-            'dir': 'girlsconnect/GC_CallDtl'
+            'directory': 'girlsconnect/GC_CallDtl'
         },
     },
 }

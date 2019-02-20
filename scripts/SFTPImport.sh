@@ -47,4 +47,4 @@ s3cmd sync --secret_key=${SECRET_KEY} --access_key=${ACCESS_KEY} ${DIR:? $D_ERRO
 #exit
 
 # remove the files from our server
-rm -rf ${DIR:? $D_ERROR}/${FILES:- *}
+#rm -rf ${DIR:? $D_ERROR}/${FILES:- *}
