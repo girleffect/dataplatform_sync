@@ -17,7 +17,10 @@ def gc_data_sync(**kwargs):
     timestamped_format = kwargs.get('timestamped_format')
 
     if timestamped_files and timestamped_format:
-        files = files.format(timezone.now().strftime(timestamped_format))
+        files = files.format(
+            (timezone.now() - timezone.timedelta(days=1)
+             ).strftime(timestamped_format)
+        )
 
     host = getattr(settings, 'ISON_HOST', '')
     user = getattr(settings, 'ISON_USER', '')
