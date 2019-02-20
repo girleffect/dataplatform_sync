@@ -4,7 +4,7 @@ from .base import *
 DEBUG = False
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '&q(#l4#*%5eikotl0(%@25lh09gm#b5&(ik7oya@-o_sn!1=%@'
+SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 
 # ISON Credentials
