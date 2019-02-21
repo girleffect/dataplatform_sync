@@ -35,11 +35,20 @@ do
  esac
 done
 
+# check if dir exists and recreate it
+if [ -d "$(pwd)/${DIR:? $D_ERROR}" ]; then
+  rm -rf $(pwd)/${DIR:? $D_ERROR}/
+fi
+mkdir $(pwd)/${DIR:? $D_ERROR}/
+
 # get the files from remote
-sshpass -p ${PASSWORD:? $P_ERROR} sftp -a ${USERNAME:? $RU_ERROR}@${REMOTE_HOST:? $RH_ERROR}:${FILES:- *} ${DIR:? $D_ERROR}
+sshpass -p ${PASSWORD:? $P_ERROR} sftp -a ${USERNAME:? $RU_ERROR}@${REMOTE_HOST:? $RH_ERROR}:${FILES:- *} $(pwd)/${DIR:? $D_ERROR}/
+
+# Archive your old data
+s3cmd mv --secret_key=${SECRET_KEY} --access_key=${ACCESS_KEY} s3://${BUCKET:? S3_ERROR}${DIR:? $D_ERROR}/ s3://${BUCKET:? S3_ERROR}archive/${DIR:? $D_ERROR}/$(date +%Y-%m-%d)/ --recursive
 
 # upload downloaded to S3
-s3cmd sync --secret_key=${SECRET_KEY} --access_key=${ACCESS_KEY} ${DIR:? $D_ERROR}/${FILES:- *} s3://${BUCKET:? S3_ERROR}
+s3cmd sync --secret_key=${SECRET_KEY} --access_key=${ACCESS_KEY} $(pwd)/${DIR:? $D_ERROR}/ s3://${BUCKET:? S3_ERROR}${DIR:? $D_ERROR}/
 
 # remove the files from remote
 #sshpass -p ${PASSWORD:? $P_ERROR} sftp ${USERNAME:? $RU_ERROR}@${REMOTE_HOST:? $RH_ERROR}
@@ -47,4 +56,4 @@ s3cmd sync --secret_key=${SECRET_KEY} --access_key=${ACCESS_KEY} ${DIR:? $D_ERRO
 #exit
 
 # remove the files from our server
-#rm -rf ${DIR:? $D_ERROR}/${FILES:- *}
+rm -rf $(pwd)/${DIR:? $D_ERROR}/
