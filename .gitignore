@@ -1,1 +1,8 @@
 
+*.py[cod]
+*.egg
+*.egg-info
+celerybeat-schedule
+celerybeat-schedule.db
+db.sqlite3
+ve/

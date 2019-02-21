@@ -111,20 +111,20 @@ CELERY_RESULT_BACKEND = os.environ.get(
     'CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
 
 CELERYBEAT_SCHEDULE = {
-    # Executes every Week at 5:30 a.m.
+    # Executes every Week at 6 a.m.
     'pull-call-detail-to-s3': {
         'task': 'dataplatform_sync.tasks.gc_data_sync',
-        'schedule': crontab(hour=12, day_of_week='*'),
+        'schedule': crontab(hour=14, day_of_week='*'),
         'kwargs': {
             'files': 'GC_RAW_DATA/*.csv',
             'directory': 'girlsconnect/GC_RAW_DATA'
         },
     },
 
-    # Executes every Week at 5:00 a.m.
+    # Executes every Week at 6 a.m.
     'pull-play-story-detail-to-s3': {
         'task': 'dataplatform_sync.tasks.gc_data_sync',
-        'schedule': crontab(hour=12, day_of_week='*'),
+        'schedule': crontab(hour=14, day_of_week='*'),
         'kwargs': {
             'files': 'GC_CallDtl/playStoryDetails{}.csv',
             'timestamped_files': True,
