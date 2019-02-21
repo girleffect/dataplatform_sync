@@ -9,7 +9,7 @@ from django.conf import settings
 os.environ.setdefault(
     'DJANGO_SETTINGS_MODULE', 'dataplatform_sync.settings.production')
 
-app = Celery(getattr(settings, 'CELERY_APP_NAME', 'proj'))
+app = Celery('proj')
 
 # Using a string here means the worker will not have to
 # pickle the object when using Windows.
