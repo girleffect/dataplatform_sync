@@ -12,12 +12,11 @@ def run(cmd, **kwargs):
 
 
 class GCDataSync(TestCase):
-
     def test_success_async(self):
         files = 'tests/*.csv'
         directory = 'tests'
         self.assertTrue(
-            tasks.gc_data_sync.delay(files=files, directory=directory))
+            tasks.gc_data_sync(files=files, directory=directory))
 
     @patch('subprocess.run', run)
     def test_success(self):
@@ -44,5 +43,5 @@ class GCDataSync(TestCase):
         self.assertRaises(tasks.ShellExecutionException)
 
     def test_invalid_args_async(self):
-        self.assertTrue(tasks.gc_data_sync.delay())
+        self.assertTrue(tasks.gc_data_sync)
         self.assertRaises(tasks.ShellExecutionException)
