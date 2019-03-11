@@ -1,11 +1,6 @@
 import os
 from celery.schedules import crontab
 
-import djcelery
-
-
-djcelery.setup_loader()
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -15,7 +10,6 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(",")
 # Application definition
 INSTALLED_APPS = [
     'dataplatform_sync',
-    'djcelery',
 
     'django.contrib.admin',
     'django.contrib.auth',
