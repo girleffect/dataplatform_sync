@@ -1,5 +1,5 @@
 #!/bin/sh
-
+set +x
 # REMOTE_HOST, USERNAME, REMOTE_DIR, FILES
 
 # usage
