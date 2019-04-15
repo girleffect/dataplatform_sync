@@ -42,6 +42,7 @@ fi
 mkdir -p ${DIR:? $D_ERROR}
 
 # get the files from remote
+ssh-keygen -R ${REMOTE_HOST:? $RH_ERROR}
 sshpass -p ${PASSWORD:? $P_ERROR} sftp -a ${USERNAME:? $RU_ERROR}@${REMOTE_HOST:? $RH_ERROR}:${FILES:- *} ${DIR:? $D_ERROR}/
 
 # Archive your old data
