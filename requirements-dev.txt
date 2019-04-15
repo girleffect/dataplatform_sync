@@ -1,5 +1,5 @@
-pytest>=3.6.0
-pytest-django==3.1.1
+pytest>=4.4.0
+pytest-django==3.4.8
 pytest-cov>=2.6.1
 pytest-xdist>=1.26.1
 flake8>=3.5.0
