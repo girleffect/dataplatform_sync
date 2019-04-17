@@ -6,3 +6,5 @@ celerybeat-schedule
 celerybeat-schedule.db
 db.sqlite3
 ve/
+.coverage
+data_sync/
