@@ -52,7 +52,7 @@ sshpass -p ${PASSWORD:? $P_ERROR} sftp -o StrictHostKeyChecking=no -a ${USERNAME
 s3cmd sync --secret_key=${SECRET_KEY} --access_key=${ACCESS_KEY} ${DIR:? $D_ERROR}/ s3://${BUCKET:? S3_ERROR}${DIR:? $D_ERROR}/
 
 # remove the files from remote
-sshpass -p ${PASSWORD:? $P_ERROR} sftp ${USERNAME:? $RU_ERROR}@${REMOTE_HOST:? $RH_ERROR}
+sshpass -p ${PASSWORD:? $P_ERROR} sftp -o StrictHostKeyChecking=no -a ${USERNAME:? $RU_ERROR}@${REMOTE_HOST:? $RH_ERROR}
 rm -rf ${FILES:- *}
 exit
 
