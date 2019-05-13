@@ -46,15 +46,15 @@ ssh-keygen -R ${REMOTE_HOST:? $RH_ERROR}
 sshpass -p ${PASSWORD:? $P_ERROR} sftp -o StrictHostKeyChecking=no -a ${USERNAME:? $RU_ERROR}@${REMOTE_HOST:? $RH_ERROR}:${FILES:- *} ${DIR:? $D_ERROR}/
 
 # Archive your old data
-s3cmd mv --secret_key=${SECRET_KEY} --access_key=${ACCESS_KEY} s3://${BUCKET:? S3_ERROR}${DIR:? $D_ERROR}/ s3://${BUCKET:? S3_ERROR}${DIR:? $D_ERROR}/archive/ --recursive --exclude=archive/*
+# s3cmd mv --secret_key=${SECRET_KEY} --access_key=${ACCESS_KEY} s3://${BUCKET:? S3_ERROR}${DIR:? $D_ERROR}/ s3://${BUCKET:? S3_ERROR}${DIR:? $D_ERROR}/archive/ --recursive --exclude=archive/*
 
 # upload downloaded to S3
 s3cmd sync --secret_key=${SECRET_KEY} --access_key=${ACCESS_KEY} ${DIR:? $D_ERROR}/ s3://${BUCKET:? S3_ERROR}${DIR:? $D_ERROR}/
 
 # remove the files from remote
-#sshpass -p ${PASSWORD:? $P_ERROR} sftp ${USERNAME:? $RU_ERROR}@${REMOTE_HOST:? $RH_ERROR}
-#rm -rf ${FILES:- *}
-#exit
+sshpass -p ${PASSWORD:? $P_ERROR} sftp ${USERNAME:? $RU_ERROR}@${REMOTE_HOST:? $RH_ERROR}
+rm -rf ${FILES:- *}
+exit
 
 # remove the files from our server
 rm -rf ${DIR:? $D_ERROR}/
