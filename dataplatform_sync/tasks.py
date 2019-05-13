@@ -2,6 +2,7 @@ import subprocess
 from celery import task
 from django.conf import settings
 from django.utils import timezone
+import boto3
 
 
 class ShellExecutionException(Exception):
@@ -47,3 +48,15 @@ def gc_data_sync(**kwargs):
         raise ShellExecutionException(
             'Error executing {}: {}'.format(script, res.stderr))
     return res
+
+@task(ignore_result=True)
+def start_matillion_instance(**kwargs):
+    instance_id = kwargs.get('instance_id', '')
+    ec2 = boto3.resource('ec2')
+    ec2.instances.filter(InstanceIds = instance_id).start()
+
+@task(ignore_result=True)
+def stop_matillion_instance(**kwargs):
+    instance_id = kwargs.get('instance_id', '')
+    ec2 = boto3.resource('ec2')
+    ec2.instances.filter(InstanceIds = instance_id).stop()

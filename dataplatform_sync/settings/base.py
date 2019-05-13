@@ -106,26 +106,45 @@ BROKER_URL = os.environ.get('BROKER_URL', 'redis://localhost:6379/0')
 CELERY_RESULT_BACKEND = os.environ.get(
     'CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
 
+MATILLION_INSTANCE_ID = os.environ.get(
+    'MATILLION_INSTANCE_ID', '')
+
 CELERYBEAT_SCHEDULE = {
-    # Executes every Week at 5 a.m.
+    # Executes Monday at 8 a.m.
     'pull-call-detail-to-s3': {
         'task': 'dataplatform_sync.tasks.gc_data_sync',
-        'schedule': crontab(hour=5, day_of_week='*'),
+        'schedule': crontab(hour=8, day_of_week='1'),
         'kwargs': {
             'files': 'GC_RAW_DATA/*.csv',
             'directory': 'girlsconnect/GC_RAW_DATA'
         },
     },
 
-    # Executes every Week at 5 a.m.
+    # Executes Monday at 8 a.m.
     'pull-play-story-detail-to-s3': {
         'task': 'dataplatform_sync.tasks.gc_data_sync',
-        'schedule': crontab(hour=5, day_of_week='*'),
+        'schedule': crontab(hour=8, day_of_week='1'),
         'kwargs': {
             'files': 'GC_CallDtl/playStoryDetails{}.csv',
             'timestamped_files': True,
             'timestamped_format': '%Y%m%d',
             'directory': 'girlsconnect/GC_CallDtl'
+        },
+    },
+    # Executes every Monday at 9 a.m.
+    'start_matillion_instance': {
+        'task': 'dataplatform_sync.tasks.start_matillion_instance',
+        'schedule': crontab(hour=9, day_of_week='1'),
+        'kwargs': {
+            'instance_id': MATILLION_INSTANCE_ID,
+        },
+    },
+    # Executes every Monday at 10 a.m.
+    'stop_matillion_instance': {
+        'task': 'dataplatform_sync.tasks.stop_matillion_instance',
+        'schedule': crontab(hour=10, day_of_week='1'),
+        'kwargs': {
+            'instance_id': MATILLION_INSTANCE_ID,
         },
     },
 }
