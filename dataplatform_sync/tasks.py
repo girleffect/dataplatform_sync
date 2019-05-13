@@ -49,14 +49,18 @@ def gc_data_sync(**kwargs):
             'Error executing {}: {}'.format(script, res.stderr))
     return res
 
+
 @task(ignore_result=True)
 def start_matillion_instance(**kwargs):
-    instance_id = kwargs.get('instance_id', '')
-    ec2 = boto3.resource('ec2')
-    ec2.instances.filter(InstanceIds = instance_id).start()
+    instance_id = kwargs.get('instance_id')
+    if instance_id:
+        ec2 = boto3.resource('ec2')
+        ec2.instances.filter(InstanceIds=instance_id).start()
+
 
 @task(ignore_result=True)
 def stop_matillion_instance(**kwargs):
-    instance_id = kwargs.get('instance_id', '')
-    ec2 = boto3.resource('ec2')
-    ec2.instances.filter(InstanceIds = instance_id).stop()
+    instance_id = kwargs.get('instance_id')
+    if instance_id:
+        ec2 = boto3.resource('ec2')
+        ec2.instances.filter(InstanceIds=instance_id).stop()
