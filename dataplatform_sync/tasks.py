@@ -54,13 +54,17 @@ def gc_data_sync(**kwargs):
 def start_matillion_instance(**kwargs):
     instance_id = kwargs.get('instance_id')
     if instance_id:
-        ec2 = boto3.resource('ec2')
-        ec2.instances.filter(InstanceIds=instance_id).start()
+        ec2 = boto3.resource(
+            'ec2', region_name=settings.AWS_DEFAULT_REGION
+        )
+        ec2.instances.filter(InstanceIds=[instance_id]).start()
 
 
 @task(ignore_result=True)
 def stop_matillion_instance(**kwargs):
     instance_id = kwargs.get('instance_id')
     if instance_id:
-        ec2 = boto3.resource('ec2')
-        ec2.instances.filter(InstanceIds=instance_id).stop()
+        ec2 = boto3.resource(
+            'ec2', region_name=settings.AWS_DEFAULT_REGION
+        )
+        ec2.instances.filter(InstanceIds=[instance_id]).stop()

@@ -148,7 +148,7 @@ CELERY_BEAT_SCHEDULE = {
     # Executes every Monday at 9 a.m.
     'start_matillion_instance': {
         'task': 'dataplatform_sync.tasks.start_matillion_instance',
-        'schedule': crontab(hour=13, minute=45, day_of_week='thursday'),
+        'schedule': crontab(hour=15, minute=10, day_of_week='thursday'),
         'kwargs': {
             'instance_id': MATILLION_INSTANCE_ID,
         },
@@ -156,7 +156,7 @@ CELERY_BEAT_SCHEDULE = {
     # Executes every Monday at 10 a.m.
     'stop_matillion_instance': {
         'task': 'dataplatform_sync.tasks.stop_matillion_instance',
-        'schedule': crontab(hour=14, minute=0, day_of_week='thursday'),
+        'schedule': crontab(hour=15, minute=20, day_of_week='thursday'),
         'kwargs': {
             'instance_id': MATILLION_INSTANCE_ID,
         },
