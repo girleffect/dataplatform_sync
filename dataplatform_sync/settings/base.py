@@ -102,7 +102,7 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ALWAYS_EAGER = False
-BROKER_URL = os.environ.get('BROKER_URL', 'redis://localhost:6379/0')
+CELERY_BROKER_URL = os.environ.get('BROKER_URL', 'redis://localhost:6379/0')
 CELERY_RESULT_BACKEND = os.environ.get(
     'CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
 
@@ -123,7 +123,7 @@ CELERY_TASK_ROUTES = {
     },
 }
 
-CELERYBEAT_SCHEDULE = {
+CELERY_BEAT_SCHEDULE = {
     # Executes Monday at 8 a.m.
     'pull-call-detail-to-s3': {
         'task': 'dataplatform_sync.tasks.gc_data_sync',
@@ -148,7 +148,7 @@ CELERYBEAT_SCHEDULE = {
     # Executes every Monday at 9 a.m.
     'start_matillion_instance': {
         'task': 'dataplatform_sync.tasks.start_matillion_instance',
-        'schedule': crontab(hour=12, minute=0, day_of_week='thursday'),
+        'schedule': crontab(hour=13, minute=45, day_of_week='thursday'),
         'kwargs': {
             'instance_id': MATILLION_INSTANCE_ID,
         },
@@ -156,7 +156,7 @@ CELERYBEAT_SCHEDULE = {
     # Executes every Monday at 10 a.m.
     'stop_matillion_instance': {
         'task': 'dataplatform_sync.tasks.stop_matillion_instance',
-        'schedule': crontab(hour=12, minute=30, day_of_week='thursday'),
+        'schedule': crontab(hour=14, minute=0, day_of_week='thursday'),
         'kwargs': {
             'instance_id': MATILLION_INSTANCE_ID,
         },
