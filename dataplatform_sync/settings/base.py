@@ -112,9 +112,15 @@ CELERY_IMPORTS = ("dataplatform_sync.tasks")
 
 CELERY_TASK_CREATE_MISSING_QUEUES = True
 CELERY_TASK_ROUTES = {
-    "dataplatform_sync.tasks.gc_data_sync": {"queue": "gc_data_sync"},
-    "dataplatform_sync.tasks.start_matillion_instance": {"queue": "start_stop_matillion"},
-    "dataplatform_sync.tasks.stop_matillion_instance": {"queue": "start_stop_matillion"},
+    "dataplatform_sync.tasks.gc_data_sync": {
+        "queue": "gc_data_sync"
+    },
+    "dataplatform_sync.tasks.start_matillion_instance": {
+        "queue": "start_stop_matillion"
+    },
+    "dataplatform_sync.tasks.stop_matillion_instance": {
+        "queue": "start_stop_matillion"
+    },
 }
 
 CELERYBEAT_SCHEDULE = {
