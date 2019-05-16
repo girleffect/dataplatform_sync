@@ -108,11 +108,20 @@ CELERY_RESULT_BACKEND = os.environ.get(
 
 MATILLION_INSTANCE_ID = os.environ.get('MATILLION_INSTANCE_ID')
 
+CELERY_IMPORTS = ("dataplatform_sync.tasks")
+
+CELERY_TASK_CREATE_MISSING_QUEUES = True
+CELERY_TASK_ROUTES = {
+    "dataplatform_sync.tasks.gc_data_sync": {"queue": "gc_data_sync"},
+    "dataplatform_sync.tasks.start_matillion_instance": {"queue": "start_stop_matillion"},
+    "dataplatform_sync.tasks.stop_matillion_instance": {"queue": "start_stop_matillion"},
+}
+
 CELERYBEAT_SCHEDULE = {
     # Executes Monday at 8 a.m.
     'pull-call-detail-to-s3': {
         'task': 'dataplatform_sync.tasks.gc_data_sync',
-        'schedule': crontab(hour=8, day_of_week='1'),
+        'schedule': crontab(hour=8, minute=0, day_of_week='monday'),
         'kwargs': {
             'files': 'GC_RAW_DATA/*.csv',
             'directory': 'girlsconnect/GC_RAW_DATA'
@@ -122,7 +131,7 @@ CELERYBEAT_SCHEDULE = {
     # Executes Monday at 8 a.m.
     'pull-play-story-detail-to-s3': {
         'task': 'dataplatform_sync.tasks.gc_data_sync',
-        'schedule': crontab(hour=8, day_of_week='1'),
+        'schedule': crontab(hour=8, minute=0, day_of_week='monday'),
         'kwargs': {
             'files': 'GC_CallDtl/playStoryDetails{}.csv',
             'timestamped_files': True,
@@ -133,7 +142,7 @@ CELERYBEAT_SCHEDULE = {
     # Executes every Monday at 9 a.m.
     'start_matillion_instance': {
         'task': 'dataplatform_sync.tasks.start_matillion_instance',
-        'schedule': crontab(hour=9, day_of_week='1'),
+        'schedule': crontab(hour=12, minute=0, day_of_week='thursday'),
         'kwargs': {
             'instance_id': MATILLION_INSTANCE_ID,
         },
@@ -141,7 +150,7 @@ CELERYBEAT_SCHEDULE = {
     # Executes every Monday at 10 a.m.
     'stop_matillion_instance': {
         'task': 'dataplatform_sync.tasks.stop_matillion_instance',
-        'schedule': crontab(hour=10, day_of_week='1'),
+        'schedule': crontab(hour=12, minute=30, day_of_week='thursday'),
         'kwargs': {
             'instance_id': MATILLION_INSTANCE_ID,
         },
