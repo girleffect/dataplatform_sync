@@ -134,10 +134,10 @@ CELERY_BEAT_SCHEDULE = {
         },
     },
 
-    # Executes Monday at 8 a.m.
+    # Executes Monday at 8:15 a.m.
     'pull-play-story-detail-to-s3': {
         'task': 'dataplatform_sync.tasks.gc_data_sync',
-        'schedule': crontab(hour=8, minute=0, day_of_week='monday'),
+        'schedule': crontab(hour=8, minute=15, day_of_week='monday'),
         'kwargs': {
             'files': 'GC_CallDtl/playStoryDetails{}.csv',
             'timestamped_files': True,
@@ -148,15 +148,15 @@ CELERY_BEAT_SCHEDULE = {
     # Executes every Monday at 9 a.m.
     'start_matillion_instance': {
         'task': 'dataplatform_sync.tasks.start_matillion_instance',
-        'schedule': crontab(hour=10, minute=0, day_of_week='friday'),
+        'schedule': crontab(hour=9, minute=0, day_of_week='monday'),
         'kwargs': {
             'instance_id': MATILLION_INSTANCE_ID,
         },
     },
-    # Executes every Monday at 10 a.m.
+    # Executes every Monday at 10:30 a.m.
     'stop_matillion_instance': {
         'task': 'dataplatform_sync.tasks.stop_matillion_instance',
-        'schedule': crontab(hour=10, minute=15, day_of_week='friday'),
+        'schedule': crontab(hour=10, minute=30, day_of_week='monday'),
         'kwargs': {
             'instance_id': MATILLION_INSTANCE_ID,
         },
