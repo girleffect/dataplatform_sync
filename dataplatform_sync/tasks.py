@@ -55,7 +55,10 @@ def start_matillion_instance(**kwargs):
     instance_id = kwargs.get('instance_id')
     if instance_id:
         ec2 = boto3.resource(
-            'ec2', region_name=settings.AWS_DEFAULT_REGION
+            'ec2',
+            region_name=settings.AWS_DEFAULT_REGION,
+            aws_access_key_id=settings.AWS_ACCESS_KEY,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
         )
         ec2.instances.filter(InstanceIds=[instance_id]).start()
 
@@ -65,6 +68,9 @@ def stop_matillion_instance(**kwargs):
     instance_id = kwargs.get('instance_id')
     if instance_id:
         ec2 = boto3.resource(
-            'ec2', region_name=settings.AWS_DEFAULT_REGION
+            'ec2',
+            region_name=settings.AWS_DEFAULT_REGION,
+            aws_access_key_id=settings.AWS_ACCESS_KEY,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
         )
         ec2.instances.filter(InstanceIds=[instance_id]).stop()
