@@ -6,6 +6,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(",")
 
+SECRET_KEY = os.environ.get('SECRET_KEY', 'please-change-me')
 
 # Application definition
 INSTALLED_APPS = [
@@ -124,20 +125,20 @@ CELERY_TASK_ROUTES = {
 }
 
 CELERY_BEAT_SCHEDULE = {
-    # Executes Monday at 8 a.m.
+    # Executes on Tuesday at 12 a.m.
     'pull-call-detail-to-s3': {
         'task': 'dataplatform_sync.tasks.gc_data_sync',
-        'schedule': crontab(hour=8, minute=0, day_of_week='monday'),
+        'schedule': crontab(hour=0, minute=0, day_of_week='tuesday'),
         'kwargs': {
             'files': 'GC_RAW_DATA/*.csv',
             'directory': 'girlsconnect/GC_RAW_DATA'
         },
     },
 
-    # Executes Monday at 8:15 a.m.
+    # Executes on Tuesday at 12:15 a.m.
     'pull-play-story-detail-to-s3': {
         'task': 'dataplatform_sync.tasks.gc_data_sync',
-        'schedule': crontab(hour=8, minute=15, day_of_week='monday'),
+        'schedule': crontab(hour=0, minute=15, day_of_week='tuesday'),
         'kwargs': {
             'files': 'GC_CallDtl/playStoryDetails{}.csv',
             'timestamped_files': True,
@@ -145,18 +146,18 @@ CELERY_BEAT_SCHEDULE = {
             'directory': 'girlsconnect/GC_CallDtl'
         },
     },
-    # Executes every Monday at 9 a.m.
+    # Executes every day at 12 a.m.
     'start_matillion_instance': {
         'task': 'dataplatform_sync.tasks.start_matillion_instance',
-        'schedule': crontab(hour=9, minute=0, day_of_week='monday'),
+        'schedule': crontab(hour=0, minute=0, day_of_week='*'),
         'kwargs': {
             'instance_id': MATILLION_INSTANCE_ID,
         },
     },
-    # Executes every Monday at 10:30 a.m.
+    # Executes every day at 1:30 a.m.
     'stop_matillion_instance': {
         'task': 'dataplatform_sync.tasks.stop_matillion_instance',
-        'schedule': crontab(hour=10, minute=30, day_of_week='monday'),
+        'schedule': crontab(hour=1, minute=30, day_of_week='*'),
         'kwargs': {
             'instance_id': MATILLION_INSTANCE_ID,
         },

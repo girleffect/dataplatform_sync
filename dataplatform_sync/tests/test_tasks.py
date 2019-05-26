@@ -12,6 +12,7 @@ def run(cmd, **kwargs):
 
 
 class GCDataSync(TestCase):
+    @patch('subprocess.run', run)
     def test_success_async(self):
         files = 'tests/*.csv'
         directory = 'tests'

@@ -19,7 +19,7 @@ def gc_data_sync(**kwargs):
 
     if timestamped_files and timestamped_format:
         files = files.format(
-            (timezone.now() - timezone.timedelta(days=1)
+            (timezone.now() - timezone.timedelta(days=2)
              ).strftime(timestamped_format)
         )
 
