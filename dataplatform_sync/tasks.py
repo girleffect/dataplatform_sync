@@ -74,3 +74,30 @@ def stop_matillion_instance(**kwargs):
             aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
         )
         ec2.instances.filter(InstanceIds=[instance_id]).stop()
+
+
+@task(ignore_result=True)
+def run_ge_sm(**kwargs):
+    from ge_sm.control import pathname as directory
+    bucket = getattr(settings, 'S3_BUCKET', '')
+    secret_key = getattr(settings, 'S3_SECRET_KEY', '')
+    access_key = getattr(settings, 'S3_ACCESS_KEY', '')
+
+    cmd1 = 's3cmd sync --secret_key=${secret_key} --access_key=${access_key} ' \
+        '${dir}/ s3://${bucket}${dir}/'.format(
+            dir=directory,
+            bucket=bucket,
+            secret_key=secret_key,
+            access_key=access_key
+        )
+
+    cmd2 = 'rm ${DIR}/*/*'.format(**kwargs)
+    try:
+        import ge_sm.control
+
+        subprocess.run(cmd1, shell=True, stderr=subprocess.PIPE)
+        subprocess.run(cmd2, shell=True, stderr=subprocess.PIPE)
+    except Exception as e:
+        raise ShellExecutionException(
+            'Error executing ge_sm.control: {}'.format(e))
+    return
