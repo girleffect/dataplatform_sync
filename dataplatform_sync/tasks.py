@@ -78,20 +78,21 @@ def stop_matillion_instance(**kwargs):
 
 @task(ignore_result=True)
 def run_ge_sm(**kwargs):
-    from ge_sm.control import pathname as directory
+    from ge_sm.control import pathname as directory, upload_dir
+
     bucket = getattr(settings, 'S3_BUCKET', '')
     secret_key = getattr(settings, 'S3_SECRET_KEY', '')
     access_key = getattr(settings, 'S3_ACCESS_KEY', '')
 
     cmd1 = 's3cmd sync --secret_key=${secret_key} --access_key=${access_key} ' \
         '${dir}/ s3://${bucket}${dir}/'.format(
-            dir=directory,
+            dir=upload_dir,
             bucket=bucket,
             secret_key=secret_key,
             access_key=access_key
         )
 
-    cmd2 = 'rm ${DIR}/*/*'.format(**kwargs)
+    cmd2 = 'rm ${dir}/*/*'.format(dir=directory)
     try:
         import ge_sm.control
 
