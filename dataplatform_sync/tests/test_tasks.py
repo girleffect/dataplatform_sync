@@ -46,3 +46,12 @@ class GCDataSync(TestCase):
     def test_invalid_args_async(self):
         self.assertTrue(tasks.gc_data_sync)
         self.assertRaises(tasks.ShellExecutionException)
+
+    @patch('ge_sm.control.main')
+    @patch('subprocess.run', run)
+    def test_run_ge_sm(self, p1, p2):
+        import pdb; pdb.set_trace()
+        self.assertTrue(tasks.run_ge_sm())
+
+    def test_run_ge_sm_fail(self):
+        self.assertFalse(tasks.run_ge_sm())
