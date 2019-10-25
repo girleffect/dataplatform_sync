@@ -101,7 +101,7 @@ def run_ge_sm(**kwargs):
         today = datetime.datetime.now()
         tm = datetime.datetime.strftime(
             today + datetime.timedelta(days=2), "%Y-%m-%d")
-        start = os.environ.get('START_DATE', '2019-06-01'),
+        start = os.environ.get('START_DATE', '2019-06-01')
         end = os.environ.get('END_DATE', '2019-08-01')
         control.main(start, end, tm)
         subprocess.run(cmd1, shell=True, stderr=subprocess.PIPE)
