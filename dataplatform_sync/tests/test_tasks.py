@@ -1,3 +1,4 @@
+import datetime
 from unittest.mock import patch
 
 from django.test import TestCase
@@ -52,4 +53,7 @@ class GCDataSync(TestCase):
     def test_run_ge_sm(self, p1):
         self.assertTrue(tasks.run_ge_sm())
         p1.assert_called_once()
-        p1.assert_called_with('2019-06-01', '2019-08-01')
+        today = datetime.datetime.now()
+        tm = datetime.datetime.strftime(
+            today + datetime.timedelta(days=2), "%Y-%m-%d")
+        p1.assert_called_with('2019-06-01', '2019-08-01', tm)
