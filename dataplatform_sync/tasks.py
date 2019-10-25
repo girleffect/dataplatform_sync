@@ -92,10 +92,9 @@ def run_ge_sm(**kwargs):
             access_key=access_key
         )
 
-    cmd2 = 'rm ${dir}/*/*'.format(dir=directory)
+    cmd2 = 'rm ${dir}/*'.format(dir=directory)
     try:
         import ge_sm.control
-
         subprocess.run(cmd1, shell=True, stderr=subprocess.PIPE)
         subprocess.run(cmd2, shell=True, stderr=subprocess.PIPE)
         return True
