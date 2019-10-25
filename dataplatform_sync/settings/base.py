@@ -164,6 +164,6 @@ CELERY_BEAT_SCHEDULE = {
     },
     'run_ge_sm': {
         'task': 'dataplatform_sync.tasks.run_ge_sm',
-        'schedule': crontab(hour=2, minute=30, day_of_week='*'),
+        'schedule': crontab(hour=0, minute=30, day_of_week='*'),
     },
 }

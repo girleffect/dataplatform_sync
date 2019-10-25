@@ -97,8 +97,8 @@ def run_ge_sm(**kwargs):
         import ge_sm.control
 
         subprocess.run(cmd1, shell=True, stderr=subprocess.PIPE)
-        res = subprocess.run(cmd2, shell=True, stderr=subprocess.PIPE)
-        return res
+        subprocess.run(cmd2, shell=True, stderr=subprocess.PIPE)
+        return True
     except Exception as e:
         raise ShellExecutionException(
             'Error executing ge_sm.control: {}'.format(e))
