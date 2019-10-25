@@ -1,8 +1,10 @@
+import os
+import boto3
+import datetime
 import subprocess
 from celery import task
 from django.conf import settings
 from django.utils import timezone
-import boto3
 
 
 class ShellExecutionException(Exception):
@@ -93,8 +95,15 @@ def run_ge_sm(**kwargs):
         )
 
     cmd2 = 'rm ${dir}/*'.format(dir=directory)
+
     try:
-        import ge_sm.control
+        from ge_sm import control
+        today = datetime.datetime.now()
+        tm = datetime.datetime.strftime(
+            today + datetime.timedelta(days=2), "%Y-%m-%d")
+        start = os.environ.get('START_DATE', '2019-06-01'),
+        end = os.environ.get('END_DATE', '2019-08-01')
+        control.main(start, end, tm)
         subprocess.run(cmd1, shell=True, stderr=subprocess.PIPE)
         subprocess.run(cmd2, shell=True, stderr=subprocess.PIPE)
         return True

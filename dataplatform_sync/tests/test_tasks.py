@@ -50,4 +50,6 @@ class GCDataSync(TestCase):
     @patch('ge_sm.control.main')
     @patch('subprocess.run', run)
     def test_run_ge_sm(self, p1):
-        self.assertTrue(tasks.run_ge_sm())
+        self.assertTrue(tasks.run_ge_sm('2019-06-01', '2019-08-01'))
+        p1.assert_called_once()
+        p1.assert_called_with('2019-06-01', '2019-08-01')
