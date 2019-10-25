@@ -49,8 +49,7 @@ class GCDataSync(TestCase):
 
     @patch('ge_sm.control.main')
     @patch('subprocess.run', run)
-    def test_run_ge_sm(self, p1, p2):
-        import pdb; pdb.set_trace()
+    def test_run_ge_sm(self, p1):
         self.assertTrue(tasks.run_ge_sm())
 
     def test_run_ge_sm_fail(self):
