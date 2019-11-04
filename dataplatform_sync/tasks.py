@@ -103,9 +103,19 @@ def run_ge_sm(**kwargs):
             today + datetime.timedelta(days=2), "%Y-%m-%d")
         start = os.environ.get('START_DATE', '2019-06-01')
         end = os.environ.get('END_DATE', '2019-08-01')
+
         control.main(start, end, tm)
-        subprocess.run(cmd1, shell=True, stderr=subprocess.PIPE)
-        subprocess.run(cmd2, shell=True, stderr=subprocess.PIPE)
+        res = subprocess.run(cmd1, shell=True, stderr=subprocess.PIPE)
+
+        if res.stderr:
+            raise ShellExecutionException(
+                'Error executing ge_sm.control: {}'.format(res.stderr))
+
+        res = subprocess.run(cmd2, shell=True, stderr=subprocess.PIPE)
+        if res.stderr:
+            raise ShellExecutionException(
+                'Error executing ge_sm.control: {}'.format(res.stderr))
+
         return True
     except Exception as e:
         raise ShellExecutionException(
