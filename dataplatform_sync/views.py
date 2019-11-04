@@ -57,7 +57,7 @@ class IndexForm(forms.Form):
 class TaskView(FormView):
     form_class = IndexForm
     template_name = 'index.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('tasks')
 
     def form_valid(self, form):
         form.save()
