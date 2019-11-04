@@ -99,11 +99,18 @@ def run_ge_sm(**kwargs):
 
     try:
         from ge_sm import control
+
+        fmt = "%Y-%m-%d"
         today = datetime.datetime.now()
+        month0 = datetime.datetime.strftime(today.replace(day=1), fmt)
+        # 90 days ago
+        month1 = datetime.datetime.strftime(
+            today - datetime.timedelta(days=90), fmt)
+
         tm = datetime.datetime.strftime(
-            today + datetime.timedelta(days=2), "%Y-%m-%d")
-        start = os.environ.get('START_DATE', '2019-06-01')
-        end = os.environ.get('END_DATE', '2019-08-01')
+            today + datetime.timedelta(days=2), fmt)
+        start = os.environ.get('START_DATE', month0)
+        end = os.environ.get('END_DATE', month1)
 
         control.main(start, end, tm)
 
