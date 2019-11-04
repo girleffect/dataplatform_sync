@@ -86,15 +86,16 @@ def run_ge_sm(**kwargs):
     secret_key = getattr(settings, 'S3_SECRET_KEY', '')
     access_key = getattr(settings, 'S3_ACCESS_KEY', '')
 
-    cmd1 = 's3cmd sync --secret_key=${secret_key} --access_key=${access_key} '\
-        '${dir}/ s3://${bucket}${dir}/'.format(
+    cmd1 = 's3cmd sync --secret_key={secret_key} --access_key={access_key} '\
+        '{path}/{dir}/ s3://{bucket}${dir}/'.format(
             dir=upload_dir,
+            path=directory,
             bucket=bucket,
             secret_key=secret_key,
             access_key=access_key
         )
 
-    cmd2 = 'rm ${dir}/*'.format(dir=directory)
+    cmd2 = 'rm {path}/{dir}/*'.format(path=directory, dir=upload_dir)
 
     try:
         from ge_sm import control
