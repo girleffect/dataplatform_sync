@@ -113,8 +113,8 @@ CELERY_IMPORTS = ("dataplatform_sync.tasks")
 
 CELERY_TASK_CREATE_MISSING_QUEUES = True
 CELERY_TASK_ROUTES = {
-    "dataplatform_sync.tasks.gc_data_sync": {
-        "queue": "gc_data_sync"
+    "dataplatform_sync.tasks.run_ge_sm": {
+        "queue": "run_ge_sm"
     },
     "dataplatform_sync.tasks.start_matillion_instance": {
         "queue": "start_stop_matillion"
@@ -162,6 +162,7 @@ CELERY_BEAT_SCHEDULE = {
             'instance_id': MATILLION_INSTANCE_ID,
         },
     },
+    # Executes every day at 00:30 a.m.
     'run_ge_sm': {
         'task': 'dataplatform_sync.tasks.run_ge_sm',
         'schedule': crontab(hour=0, minute=30, day_of_week='*'),
