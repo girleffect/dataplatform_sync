@@ -1,8 +1,10 @@
+import os
+import boto3
+import datetime
 import subprocess
 from celery import task
 from django.conf import settings
 from django.utils import timezone
-import boto3
 
 
 class ShellExecutionException(Exception):
@@ -74,3 +76,55 @@ def stop_matillion_instance(**kwargs):
             aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
         )
         ec2.instances.filter(InstanceIds=[instance_id]).stop()
+
+
+@task(ignore_result=True)
+def run_ge_sm(**kwargs):
+    from ge_sm.control import pathname as directory, upload_dir
+
+    bucket = getattr(settings, 'S3_BUCKET', '')
+    secret_key = getattr(settings, 'S3_SECRET_KEY', '')
+    access_key = getattr(settings, 'S3_ACCESS_KEY', '')
+
+    cmd1 = 's3cmd sync --secret_key={secret_key} --access_key={access_key} '\
+        '{path}/{dir}/ s3://{bucket}${dir}/'.format(
+            dir=upload_dir,
+            path=directory,
+            bucket=bucket,
+            secret_key=secret_key,
+            access_key=access_key
+        )
+
+    cmd2 = 'rm {path}/{dir}/*'.format(path=directory, dir=upload_dir)
+
+    try:
+        from ge_sm import control
+
+        fmt = "%Y-%m-%d"
+        today = datetime.datetime.now()
+        month0 = datetime.datetime.strftime(today.replace(day=1), fmt)
+        # 90 days ago
+        month1 = datetime.datetime.strftime(
+            today - datetime.timedelta(days=90), fmt)
+
+        tm = datetime.datetime.strftime(
+            today + datetime.timedelta(days=2), fmt)
+        start = os.environ.get('START_DATE', month0)
+        end = os.environ.get('END_DATE', month1)
+
+        control.main(start, end, tm)
+
+        res = subprocess.run(cmd1, shell=True, stderr=subprocess.PIPE)
+        if hasattr(res, 'stderr'):
+            raise ShellExecutionException(
+                'Error executing ge_sm.control: {}'.format(res.stderr))
+
+        res = subprocess.run(cmd2, shell=True, stderr=subprocess.PIPE)
+        if hasattr(res, 'stderr'):
+            raise ShellExecutionException(
+                'Error executing ge_sm.control: {}'.format(res.stderr))
+
+        return True
+    except Exception as e:
+        raise ShellExecutionException(
+            'Error executing ge_sm.control: {}'.format(e))

@@ -162,4 +162,8 @@ CELERY_BEAT_SCHEDULE = {
             'instance_id': MATILLION_INSTANCE_ID,
         },
     },
+    'run_ge_sm': {
+        'task': 'dataplatform_sync.tasks.run_ge_sm',
+        'schedule': crontab(hour=0, minute=30, day_of_week='*'),
+    },
 }
