@@ -51,9 +51,15 @@ class GCDataSync(TestCase):
     @patch('ge_sm.control.main')
     @patch('subprocess.run', run)
     def test_run_ge_sm(self, p1):
-        self.assertTrue(tasks.run_ge_sm())
-        p1.assert_called_once()
+        fmt = "%Y-%m-%d"
         today = datetime.datetime.now()
         tm = datetime.datetime.strftime(
-            today + datetime.timedelta(days=2), "%Y-%m-%d")
-        p1.assert_called_with('2019-06-01', '2019-08-01', tm)
+            today + datetime.timedelta(days=2), fmt)
+        month0 = datetime.datetime.strftime(
+            today.replace(day=1), fmt)
+        month1 = datetime.datetime.strftime(
+            today - datetime.timedelta(days=90), fmt)
+
+        self.assertTrue(tasks.run_ge_sm())
+        p1.assert_called_once()
+        p1.assert_called_with(month0, month1, tm)
