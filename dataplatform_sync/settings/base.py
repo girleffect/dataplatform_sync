@@ -162,9 +162,9 @@ CELERY_BEAT_SCHEDULE = {
             'instance_id': MATILLION_INSTANCE_ID,
         },
     },
-    # Executes every day at 00:30 a.m.
+    # Executes every day at 15:15 UTC / 13:15 CAT
     'run_ge_sm': {
         'task': 'dataplatform_sync.tasks.run_ge_sm',
-        'schedule': crontab(hour=0, minute=30, day_of_week='*'),
+        'schedule': crontab(hour=15, minute=15, day_of_week='*'),
     },
 }
