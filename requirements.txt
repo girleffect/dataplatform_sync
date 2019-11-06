@@ -2,4 +2,4 @@ django>=2.1.6
 celery==4.2.1
 redis==2.10.6
 boto3
-ge-sm==0.0.10
+ge-sm==0.0.11
