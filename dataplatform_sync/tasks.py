@@ -1,3 +1,4 @@
+import re
 import os
 import boto3
 import datetime
@@ -88,7 +89,7 @@ def run_ge_sm(**kwargs):
 
     cmd1 = 's3cmd sync --secret_key={secret_key} --access_key={access_key} '\
         '{path}/{dir}/ s3://{bucket}${dir}/'.format(
-            dir=upload_dir,
+            dir=re.sub(r'^/', '', upload_dir),
             path=directory,
             bucket=bucket,
             secret_key=secret_key,
