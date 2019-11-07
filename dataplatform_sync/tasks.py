@@ -95,7 +95,7 @@ def run_ge_sm(**kwargs):
             access_key=access_key
         )
 
-    cmd2 = 'rm {path}/{dir}/*'.format(path=directory, dir=upload_dir)
+    cmd2 = 'rm -rf {path}/{dir}/*'.format(path=directory, dir=upload_dir)
 
     try:
         from ge_sm import control
