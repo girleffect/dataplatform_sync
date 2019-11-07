@@ -115,12 +115,12 @@ def run_ge_sm(**kwargs):
         control.main(start, end, tm)
 
         res = subprocess.run(cmd1, shell=True, stderr=subprocess.PIPE)
-        if hasattr(res, 'stderr'):
+        if res.returncode > 0:
             raise ShellExecutionException(
                 'Error executing ge_sm.control: {}'.format(res.stderr))
 
         res = subprocess.run(cmd2, shell=True, stderr=subprocess.PIPE)
-        if hasattr(res, 'stderr'):
+        if res.returncode > 0:
             raise ShellExecutionException(
                 'Error executing ge_sm.control: {}'.format(res.stderr))
 
