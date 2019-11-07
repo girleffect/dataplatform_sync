@@ -80,7 +80,7 @@ def stop_matillion_instance(**kwargs):
 
 @task(ignore_result=True)
 def run_ge_sm(**kwargs):
-    from ge_sm.control import pathname as directory, upload_dir
+    from ge_sm.control import path_dir as directory, upload_dir
 
     bucket = getattr(settings, 'S3_BUCKET', '')
     secret_key = getattr(settings, 'S3_SECRET_KEY', '')
