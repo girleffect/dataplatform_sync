@@ -88,7 +88,7 @@ def run_ge_sm(**kwargs):
     access_key = getattr(settings, 'S3_ACCESS_KEY', '')
 
     cmd1 = 's3cmd sync --secret_key={secret_key} --access_key={access_key} '\
-        '{path}/{dir}/ s3://{bucket}${dir}/'.format(
+        '{path}/{dir}/ s3://{bucket}{dir}/'.format(
             dir=re.sub(r'^/', '', upload_dir),
             path=directory,
             bucket=bucket,
