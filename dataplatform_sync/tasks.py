@@ -97,7 +97,8 @@ def run_ge_sm(**kwargs):
         date=datetime.datetime.strftime(today, fmt))
 
     cmd = 's3cmd mv --secret_key={secret_key} --access_key={access_key} ' \
-          's3://{bucket}{dir}/*.csv s3://{bucket}{dir}/archive/{date}/'\
+          's3://{bucket}{dir}/*.csv s3://{bucket}{dir}/archive/{date}/ ' \
+          ' --exclude=/{dir}/archive/* --recursive' \
         .format(**kw)
 
     del kw['date']
@@ -123,7 +124,7 @@ def run_ge_sm(**kwargs):
         control.main(start, end, tm)
         for i in [cmd, cmd1, cmd2]:
             res = subprocess.run(i, shell=True, stderr=subprocess.PIPE)
-            if not res.returncode == 0:
+            if not res.returncode == 0 and res.stderr:
                 raise ShellExecutionException(
                     'Error executing ge_sm.control: {}'.format(res.stderr))
 
