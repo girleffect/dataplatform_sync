@@ -82,27 +82,33 @@ def stop_matillion_instance(**kwargs):
 @task(ignore_result=True)
 def run_ge_sm(**kwargs):
     from ge_sm.control import path_dir as directory, upload_dir
+    fmt = "%Y-%m-%d"
+    today = datetime.datetime.now()
 
     bucket = getattr(settings, 'S3_BUCKET', '')
     secret_key = getattr(settings, 'S3_SECRET_KEY', '')
     access_key = getattr(settings, 'S3_ACCESS_KEY', '')
+    kw = dict(
+        dir=re.sub(r'^/', '', upload_dir),
+        path=directory,
+        bucket=bucket,
+        secret_key=secret_key,
+        access_key=access_key,
+        date=datetime.datetime.strftime(today, fmt))
+
+    cmd = 's3cmd mv --secret_key={secret_key} --access_key={access_key} ' \
+          's3://{bucket}{dir}/*.csv s3://{bucket}{dir}/archive/{date}/'.format(**kw)
+
+    del kw['date']
 
     cmd1 = 's3cmd sync --secret_key={secret_key} --access_key={access_key} '\
-        '{path}/{dir}/ s3://{bucket}{dir}/'.format(
-            dir=re.sub(r'^/', '', upload_dir),
-            path=directory,
-            bucket=bucket,
-            secret_key=secret_key,
-            access_key=access_key
-        )
+        '{path}/{dir}/ s3://{bucket}{dir}/'.format(**kw)
 
     cmd2 = 'rm -rf {path}/{dir}/*'.format(path=directory, dir=upload_dir)
 
     try:
         from ge_sm import control
 
-        fmt = "%Y-%m-%d"
-        today = datetime.datetime.now()
         month0 = datetime.datetime.strftime(today.replace(day=1), fmt)
         # 90 days ago
         month1 = datetime.datetime.strftime(
@@ -114,16 +120,11 @@ def run_ge_sm(**kwargs):
         end = os.environ.get('END_DATE', month1)
 
         control.main(start, end, tm)
-
-        res = subprocess.run(cmd1, shell=True, stderr=subprocess.PIPE)
-        if not res.returncode == 0:
-            raise ShellExecutionException(
-                'Error executing ge_sm.control: {}'.format(res.stderr))
-
-        res = subprocess.run(cmd2, shell=True, stderr=subprocess.PIPE)
-        if not res.returncode == 0:
-            raise ShellExecutionException(
-                'Error executing ge_sm.control: {}'.format(res.stderr))
+        for i in [cmd, cmd1, cmd2]:
+            res = subprocess.run(i, shell=True, stderr=subprocess.PIPE)
+            if not res.returncode == 0:
+                raise ShellExecutionException(
+                    'Error executing ge_sm.control: {}'.format(res.stderr))
 
         return True
     except Exception as e:
