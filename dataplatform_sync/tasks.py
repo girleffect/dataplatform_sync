@@ -98,7 +98,7 @@ def run_ge_sm(**kwargs):
 
     cmd = 's3cmd mv --secret_key={secret_key} --access_key={access_key}' \
           ' s3://{bucket}{dir}/ s3://{bucket}{dir}/archive/{date}/' \
-          ' --recursive --exclude=archive/*' \
+          ' --recursive --exclude="archive/*"' \
         .format(**kw)
 
     del kw['date']
