@@ -125,31 +125,10 @@ CELERY_TASK_ROUTES = {
 }
 
 CELERY_BEAT_SCHEDULE = {
-    # Executes on Tuesday at 12 a.m.
-    'pull-call-detail-to-s3': {
-        'task': 'dataplatform_sync.tasks.gc_data_sync',
-        'schedule': crontab(hour=0, minute=0, day_of_week='tuesday'),
-        'kwargs': {
-            'files': 'GC_RAW_DATA/*.csv',
-            'directory': 'girlsconnect/GC_RAW_DATA'
-        },
-    },
-
-    # Executes on Tuesday at 12:15 a.m.
-    'pull-play-story-detail-to-s3': {
-        'task': 'dataplatform_sync.tasks.gc_data_sync',
-        'schedule': crontab(hour=0, minute=15, day_of_week='tuesday'),
-        'kwargs': {
-            'files': 'GC_CallDtl/playStoryDetails{}.csv',
-            'timestamped_files': True,
-            'timestamped_format': '%Y%m%d',
-            'directory': 'girlsconnect/GC_CallDtl'
-        },
-    },
     # Executes every day at 12 a.m.
     'start_matillion_instance': {
         'task': 'dataplatform_sync.tasks.start_matillion_instance',
-        'schedule': crontab(hour=0, minute=0, day_of_week='*'),
+        'schedule': crontab(hour=23, minute=0, day_of_week='*'),
         'kwargs': {
             'instance_id': MATILLION_INSTANCE_ID,
         },
@@ -165,6 +144,6 @@ CELERY_BEAT_SCHEDULE = {
     # Executes every day at 15:15 UTC / 13:15 CAT
     'run_ge_sm': {
         'task': 'dataplatform_sync.tasks.run_ge_sm',
-        'schedule': crontab(hour=0, minute=30, day_of_week='*'),
+        'schedule': crontab(hour=23, minute=15, day_of_week='*'),
     },
 }
